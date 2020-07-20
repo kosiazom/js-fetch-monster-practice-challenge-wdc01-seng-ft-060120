@@ -87,5 +87,43 @@ document.addEventListener('DOMContentLoaded', function(e) {
     })
 
 
+    
 
+    let pageNumber = 1
+        
+        document.addEventListener('click', function(e){ //listening for a click...event delegate yo Ass here!
+            
+            if (e.target.id === "forward") { //if you hit the forward button then move the page by 1
+                pageNumber += 1
+                const monsterContainer = document.getElementById('monster-container')
+                monsterContainer.innerHTML = "" //this container makes it go to the next page
+                console.log(monsterContainer)
+            fetch(`http://localhost:3000/monsters/?_limit=50&_page=${pageNumber}`)
+            .then(resp => resp.json())
+            .then(monsterArray => {
+            monsterArray.forEach(monster => renderAMonster(monster))
+        })
+            
+            } else if (e.target.id === 'back') {
+                if (pageNumber > 1) { //has to know that if its beyond the first page then it can decrement by one and go back
+                    //without that it doesnt know what to do 
+                pageNumber -= 1
+                const monsterContainer = document.getElementById('monster-container')
+                    monsterContainer.innerHTML = ""
+                    console.log(monsterContainer)
+
+                fetch(`http://localhost:3000/monsters/?_limit=50&_page=${pageNumber}`)
+                .then(resp => resp.json())
+                .then(monsterArray => {
+                    monsterArray.forEach(monster => renderAMonster(monster))
+                })
+            }
+                
+            } else if (pageNumber = 1){
+                alert("Already on the first page, duh!")
+            }
+                
+        }
+
+    )
 });//DOMContentLoaded
